@@ -1,0 +1,14 @@
+---
+etherpad_required_pkgs:
+  - gzip
+  - git
+  - curl
+  - python
+  - libssl-dev
+  - pkg-config
+  - build-essential
+  - sudo
+  - curl
+  - mysql-client
+etherpad_repo: https://github.com/ether/etherpad-lite.git
+etherpad_node_version: 5

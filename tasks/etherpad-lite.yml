@@ -1,0 +1,54 @@
+---
+- name: Install required packages
+  apt: name="{{item}}" state=installed
+  with_items: "{{etherpad_required_pkgs}}"
+
+- name: Get node version
+  shell: node -v | cut -c-2
+  register: node_version
+  changed_when: False
+
+- name: Is needed to install node
+  set_fact:
+    __install_node: node_version.stdout != "v{{etherpad_node_version}}"
+
+- name: Adding nodejs sources
+  shell: "curl --silent --location https://deb.nodesource.com/setup_{{etherpad_node_version}}.x | sudo bash -"
+  when: __install_node
+
+- name: Install required packages
+  apt: name=nodejs state=installed
+  when: __install_node
+
+- name: Create user if not exist
+  user: name="{{etherpad_user_name}}" password="{{etherpad_user_password|hash('md5')}}" shell=/bin/bash append=yes home="{{etherpad_user_home}}"
+
+- name: Clone/pull project
+  git: repo="{{etherpad_repo}}" dest="{{etherpad_user_app_path}}"
+  sudo: yes
+  sudo_user: "{{etherpad_user_name}}"
+
+- name: Set owner for log file
+  file: path={{etherpad_user_log_path}} state=touch owner={{etherpad_user_name}} group=root mode=0644 force=yes
+  changed_when: False
+
+- name: Create service for etherpad
+  template: src=etherpad-lite.j2 dest=/etc/init.d/etherpad-lite owner=root group=root mode=0755
+
+- name: Start etherpad on launch
+  service: name=etherpad-lite enabled=yes
+  changed_when: False
+
+- name: Import config file
+  template: src=settings.json.j2 dest="{{etherpad_user_app_path}}/settings.json" owner="{{etherpad_user_name}}" group="{{etherpad_user_name}}" mode=0755
+  notify: Restart etherpad-lite
+
+- name: Install plugins
+  npm: name="{{item}}" path="{{etherpad_user_app_path}}" state=latest
+  with_items: "{{etherpad_plugins}}"
+  sudo: yes
+  sudo_user: "{{etherpad_user_name}}"
+  notify: Restart etherpad-lite
+
+- name: Ensure etherpad-lite is started
+  service: name=etherpad-lite state=started

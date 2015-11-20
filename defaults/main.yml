@@ -1,0 +1,46 @@
+---
+etherpad_user_name: etherpad
+etherpad_user_password: etherpad
+etherpad_user_home: /home/etherpad
+
+etherpad_user_app_path: "{{etherpad_user_home}}/etherpad-lite"
+# be sure your user access to this path !
+etherpad_user_log_path: /var/log/etherpad-lite.log
+
+etherpad_title: Etherpad Lite !
+etherpad_ip: 0.0.0.0
+etherpad_port: 9001
+
+etherpad_admin_name: admin
+etherpad_admin_password: admin
+
+etherpad_db_dbtype: dirty
+etherpad_db_filename: var/dirty.db
+# etherpad_db_dbtype: mysql
+# etherpad_db_user:
+# etherpad_db_host:
+# etherpad_db_password:
+# etherpad_db_database:
+
+etherpad_plugins:
+  - ep_adminpads
+  - ep_chat_always_on_screen_and_tokbox_link
+  - ep_copy_paste_images
+  - ep_headings2
+  - ep_markdown
+  - ep_monospace_default
+  - ep_previewimages
+  - ep_sizes
+  - ep_stats
+
+logrotate_scripts:
+  - name: etherpad-lite
+    path: "{{etherpad_user_log_path}}"
+    options:
+      - weekly
+      - rotate 3
+      - size 25M
+      - missingok
+      - compress
+      - delaycompress
+      - copytruncate

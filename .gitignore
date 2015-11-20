@@ -1,0 +1,2 @@
+.vagrant
+tests/ansible-role-etherpad-lite/playbooks/

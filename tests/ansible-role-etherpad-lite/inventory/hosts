@@ -1,0 +1,8 @@
+#!/bin/bash
+# this syntax make the playbook runnable also with via windows+vagrant
+
+cat<<EOF
+{
+  "placeholder_fqdn": [ "localhost" ]
+}
+EOF
