@@ -1,7 +1,7 @@
 $prepare = <<SCRIPT
 sudo apt-get update
 # hack for vagrant+windows compatibility
-for i in `find /vagrant -type f \( -name "hosts" \)`; do    sed -i 's/\r//' $i && chmod +x $i ; done
+for i in `find /vagrant -type f -name "hosts"`; do    sed -i 's/\r//' $i && chmod +x $i ; done
 SCRIPT
 
 Vagrant.configure(2) do |config|
