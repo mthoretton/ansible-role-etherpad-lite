@@ -5,7 +5,7 @@ for i in `find /vagrant -type f -name "hosts"`; do    sed -i 's/\r//' $i && chmo
 SCRIPT
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "debian/jessie64"
+  config.vm.box = "ubuntu/trusty64"
   config.vm.network "forwarded_port", guest: 9001, host: 9001
 
   config.vm.provision "shell", inline: $prepare

@@ -3,6 +3,6 @@
 
 cat<<EOF
 {
-  "placeholder_fqdn": [ "localhost" ]
+  "vagrant-ubuntu-trusty-64": [ "localhost" ]
 }
 EOF
