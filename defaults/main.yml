@@ -28,7 +28,6 @@ etherpad_plugins:
   - ep_copy_paste_images
   - ep_headings2
   - ep_markdown
-  - ep_monospace_default
   - ep_previewimages
   - ep_sizes
   - ep_stats
